@@ -1,6 +1,7 @@
 package com.bera.questapp.controllers;
 
 import com.bera.questapp.entities.User;
+import com.bera.questapp.responses.UserResponse;
 import com.bera.questapp.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getOneUser(@PathVariable Long userId) {
+    public UserResponse getOneUser(@PathVariable Long userId) {
         //custom exception
-        return userService.getOneUserById(userId);
+        return new UserResponse(userService.getOneUserById(userId));
     }
 
     @PutMapping("/{userId}")

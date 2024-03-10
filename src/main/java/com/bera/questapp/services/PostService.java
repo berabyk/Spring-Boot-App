@@ -42,11 +42,18 @@ public class PostService {
         }
         return list.stream().map(p -> {
             List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(p.getId()));
-            return new PostResponse(p, likes);}).collect(Collectors.toList());
+            return new PostResponse(p, likes);
+        }).collect(Collectors.toList());
     }
 
     public Post getOnePostById(Long postId) {
         return postRepository.findById(postId).orElse(null);
+    }
+
+    public PostResponse getOnePostByIdWithLikes(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(postId));
+        return new PostResponse(post, likes);
     }
 
     public Post createOnePost(PostCreateRequest newPostRequest) {
