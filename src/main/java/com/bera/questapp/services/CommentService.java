@@ -31,17 +31,17 @@ public class CommentService {
 
     @Transactional
     public List<CommentResponse> getAllCommentsWithParams(Optional<Long> userId, Optional<Long> postId) {
-        List<Comment> list;
+        List<Comment> comments;
         if (userId.isPresent() && postId.isPresent()) {
-            list = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
+            comments = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
         } else if (userId.isPresent()) {
-            list = commentRepository.findByUserId(userId.get());
+            comments = commentRepository.findByUserId(userId.get());
         } else if (postId.isPresent()) {
-            list = commentRepository.findByPostId(postId.get());
+            comments = commentRepository.findByPostId(postId.get());
         } else
-            list = commentRepository.findAll();
+            comments = commentRepository.findAll();
 
-        return list.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
+        return comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
     }
 
 

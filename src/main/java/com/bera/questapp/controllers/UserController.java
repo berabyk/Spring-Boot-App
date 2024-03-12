@@ -1,8 +1,10 @@
 package com.bera.questapp.controllers;
 
 import com.bera.questapp.entities.User;
+import com.bera.questapp.exceptions.UserNotFoundException;
 import com.bera.questapp.responses.UserResponse;
 import com.bera.questapp.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +31,11 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserResponse getOneUser(@PathVariable Long userId) {
-        //custom exception
-        return new UserResponse(userService.getOneUserById(userId));
+        User user = userService.getOneUserById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return new UserResponse(user);
     }
 
     @PutMapping("/{userId}")
@@ -44,8 +49,13 @@ public class UserController {
     }
 
     @GetMapping("/activity/{userId}")
-    public List<Object> getUserActivity(@PathVariable Long userId){
+    public List<Object> getUserActivity(@PathVariable Long userId) {
         return userService.getUserActivity(userId);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private void handleUserNotFound(){
+
+    }
 }
