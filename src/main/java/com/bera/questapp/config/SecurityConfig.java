@@ -78,6 +78,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 antMatcher(HttpMethod.GET, "/posts"),
                                 antMatcher(HttpMethod.GET, "/comments"),
+                                antMatcher(HttpMethod.GET, "/likes"),
                                 antMatcher("/auth/**")
                         ).permitAll()
                         .anyRequest().authenticated());

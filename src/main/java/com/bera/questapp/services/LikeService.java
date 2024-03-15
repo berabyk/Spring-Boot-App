@@ -1,16 +1,11 @@
 package com.bera.questapp.services;
 
-import com.bera.questapp.entities.Comment;
 import com.bera.questapp.entities.Like;
 import com.bera.questapp.entities.Post;
 import com.bera.questapp.entities.User;
 import com.bera.questapp.repos.LikeRepository;
-import com.bera.questapp.repos.PostRepository;
-import com.bera.questapp.requests.CommentCreateRequest;
-import com.bera.questapp.requests.CommentUpdateRequest;
 import com.bera.questapp.requests.LikeCreateRequest;
 import com.bera.questapp.responses.LikeResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

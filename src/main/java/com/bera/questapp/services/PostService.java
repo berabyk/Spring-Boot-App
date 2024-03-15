@@ -1,14 +1,11 @@
 package com.bera.questapp.services;
 
-import com.bera.questapp.entities.Like;
 import com.bera.questapp.entities.Post;
 import com.bera.questapp.entities.User;
 import com.bera.questapp.repos.PostRepository;
 import com.bera.questapp.requests.PostCreateRequest;
 import com.bera.questapp.requests.PostUpdateRequest;
-import com.bera.questapp.responses.LikeResponse;
 import com.bera.questapp.responses.PostResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,17 +18,15 @@ public class PostService {
     private PostRepository postRepository;
     private UserService userService;
 
-    private LikeService likeService;
-
     public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
     }
 
-    @Autowired
-    public void setLikeService(LikeService likeService) {
-        this.likeService = likeService;
-    }
+//    @Autowired
+//    public void setLikeService(LikeService likeService) {
+//        this.likeService = likeService;
+//    }
 
     public List<PostResponse> getAllPosts(Optional<Long> userId) {
         List<Post> list;
@@ -40,10 +35,7 @@ public class PostService {
         } else {
             list = postRepository.findAll();
         }
-        return list.stream().map(p -> {
-            List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(p.getId()));
-            return new PostResponse(p, likes);
-        }).collect(Collectors.toList());
+        return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
     }
 
     public Post getOnePostById(Long postId) {
@@ -52,8 +44,7 @@ public class PostService {
 
     public PostResponse getOnePostByIdWithLikes(Long postId) {
         Post post = postRepository.findById(postId).orElse(null);
-        List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(postId));
-        return new PostResponse(post, likes);
+        return new PostResponse(post);
     }
 
     public Post createOnePost(PostCreateRequest newPostRequest) {
